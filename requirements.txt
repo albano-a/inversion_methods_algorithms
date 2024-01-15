@@ -1,0 +1,11 @@
+pylops == 2.1.0
+segyio
+sys
+os
+numpy
+pandas
+matplotlib
+segyio
+scipy
+seaborn
+warnings

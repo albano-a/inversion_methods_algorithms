@@ -13,19 +13,33 @@ import seaborn as sns
 import warnings
 warnings.filterwarnings("ignore")
 
-sns.set_theme()
+sns.set_theme() # setando o tema dos plots
 print("Starting...")
+
+# iniciando timer para cronometrar o script.
 start_time = time.time()
 
-# sep = '\s+'
+# leitura dos arquivos
 eoceno = pd.read_csv("Superficies/EocenoSuperior_SubvolBackground_Time.dat",
-                     delim_whitespace=True, skiprows=0, usecols=(0, 1, 2), names=['X', 'Y', 'Z'])
+                     delim_whitespace=True,
+                     skiprows=0,
+                     usecols=(0, 1, 2),
+                     names=['X', 'Y', 'Z'])
 
 paleoceno = pd.read_csv("Superficies/Paleoceno_SubvolBackground_Time.dat",
-                        delim_whitespace=True, skiprows=0, usecols=(0, 1, 2), names=['X', 'Y', 'Z'])
+                        delim_whitespace=True,
+                        skiprows=0,
+                        usecols=(0, 1, 2),
+                        names=['X', 'Y', 'Z'])
+
 print("Loading data...")
+
+# determinação das variáveis
+# amplitude
 amp = np.load("Sismica/sismica_497.npy")
+# impedancia de baixa frequencia 
 mback = np.load("Impedancia/lowfrequency_497.npy")
+# wavelet 
 wav = np.load("Wavelets/wav_avg.npy")
 
 xl_start = np.min(eoceno['Y'])
@@ -63,6 +77,7 @@ plt.tight_layout()
 plt.savefig('Figures/lowfrequency_497.png', dpi=200, bbox_inches='tight')
 
 print("Creating wavelet...")
+
 path = "Pocos/IP_UPS/"
 
 df = pd.DataFrame()
@@ -95,7 +110,38 @@ for file in os.listdir(path):
     # Concatenate
     df = pd.concat([df, nwell], ignore_index=True)
 
-print("Inverting data...")
+############################### Inversão usando norma L1 #################################################
+
+nd = len(mback) # impedancia
+ns = len(wav) # wavelet
+
+S = scipy.linalg.toeplitz(np.append(wav, np.zeros(2*nd-ns)), np.zeros(nd))[(ns)//2:nd+(ns)//2]
+
+matder = np.zeros(shape=(nd,nd))
+
+for i in range(nd):
+  matder[i][i] = -1
+  if i<nd-1:
+    matder[i][i+1] = 1
+  else:
+    matder[i][i] = 0
+                
+print(matder)
+print(np.shape(matder))
+
+
+refl = 0.5 * matder @ np.log(mback)
+traco = S @ refl
+
+plt.plot(amp,traco)
+
+# def inv_normaL1(dobs, G, miL1=0.00001):
+    
+
+
+
+
+print("Inverting data using least squares method...")
 amp_ls = amp.copy()
 mback_ls = mback.copy()
 
@@ -103,6 +149,7 @@ amp_ls = amp[:, 675:975].T
 mback_ls = np.log(mback[:, 675:975].T)
 
 print("Shape of data [n_samples, n_traces]:", amp_ls.shape)
+
 
 # Wavelet operator
 nz, nx = amp_ls.shape

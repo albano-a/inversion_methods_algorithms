@@ -81,9 +81,37 @@ Como se pode observar, o resultado está mais suavizado que o sem a regularizaç
 
 O código rodou em 8.86s
 
-# 2 - Método FISTA
+# 3 - Método com pré-condicionamento
 
-Esse método utiliza da Transformada de Fourier para resolver o problema de inversão. A função utilizada é a `pylops.optimization.leastsquares.fista`, e o erro utilizado é de 0.028.
+O método de pré-condicionamento é utilizado para melhorar a convergência do método de Mínimos Quadrados. A função utilizada é a `pylops.optimization.leastsquares.preconditioned_inversion`, e o erro utilizado foi de 1e-1. A função custo do método pré-condicionado é:
+
+$$ J= \|\mathbf{y} - \mathbf{R} \mathbf{P} \mathbf{p}\|_2^2 $$
+
+Onde $\textbf{P}$ é o operador pré-condicionado, $p$ é o modelo projetado no espaço pré-condicionado, e $x = \textbf{P}p$ é o modelo
+no espaço original que queremos resolver. 
+
+Obs: Um problema pré-condicionado converge muito mais rápido para a solução do que o problema regularizado.
+
+```python
+m_inv_prec = pylops.optimization.leastsquares.preconditioned_inversion(
+    PPop,
+    y = amp_ls.ravel()/30000,
+    P = Sop,
+    **dict(damp=np.sqrt(1e-1), iter_lim=1000, show=0)
+)[0]
+```
+<center>
+<img src="Figures/image_inversion_497_well_prec.png" alt="Alt text" width=800 height=600>
+</center>
+
+
+# 4 - Método FISTA
+
+Esse método utiliza da Transformada de Fourier para estimar a impedância inicial. A função utilizada é a `pylops.optimization.leastsquares.fista`, e o erro utilizado é de 0.028. Abaixo se encontra a função custodo do método FISTA:
+
+$$ J_{1} = ||y - \textbf{R}\textbf{F}p||^{2}_{2} + \epsilon || p ||_1 $$
+
+Onde $\textbf{F}$ é o operador FFT.
 
 ```python
 m_inv_fista = pylops.optimization.sparsity.fista(
@@ -103,24 +131,20 @@ O resultado é o seguinte:
 <img src="Figures/image_inversion_497_well_fista.png" alt="Alt text" width=800 height=600>
 </center>
 
-# 4 - Método com pré-condicionamento
 
-O método de pré-condicionamento é utilizado para melhorar a convergência do método de Mínimos Quadrados. A função utilizada é a `pylops.optimization.leastsquares.preconditioned_inversion`, e o erro utilizado foi de 1e-1.
+# 5 -Comparação final entre as inversões:
 
-```python
-m_inv_prec = pylops.optimization.leastsquares.preconditioned_inversion(
-    PPop,
-    y = amp_ls.ravel()/30000,
-    P = Sop,
-    **dict(damp=np.sqrt(1e-1), iter_lim=1000, show=0)
-)[0]
-```
-<center>
-<img src="Figures/image_inversion_497_well_prec.png" alt="Alt text" width=800 height=600>
-</center>
-
-Comparação entre as inversões:
+No gráfico abaixo se encontra a comparação entre os métodos. Onde:
+* Obs - Dado observado.
+* Back - Dado de impedância de baixa frequência.
+* Tbt - Inversão usando os mínimos quadrados.
+* Reg - Inversão regularizada dos mínimos quadrados.
+* Fista - Inversão utilizando o método FISTA.
+* Prec - Inversão utilizando o método dos mínimos quadrados com pré-condicionamento.
 
 <center>
 <img src="Figures/all_comparison_plots.png" alt="Alt text" width=800 height=300>
 </center>
+
+Pode-se observar que as inversões que mais se aproximaram do dado observado foram a "Reg" e "Prec". Isso pode ter ocorrido
+pois os valores de erro para esses métodos foram ajustados para se aproximar mais do dado observado.

@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1011, 690)
+        MainWindow.resize(1118, 690)
         MainWindow.setMinimumSize(QtCore.QSize(860, 690))
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -27,16 +27,16 @@ class Ui_MainWindow(object):
         self.exportFigPlot = QtWidgets.QPushButton(parent=self.frame)
         self.exportFigPlot.setGeometry(QtCore.QRect(40, 490, 101, 23))
         self.exportFigPlot.setObjectName("exportFigPlot")
-        self.widget = QtWidgets.QWidget(parent=self.frame)
-        self.widget.setGeometry(QtCore.QRect(14, 40, 161, 421))
-        self.widget.setObjectName("widget")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.widget)
+        self.layoutWidget = QtWidgets.QWidget(parent=self.frame)
+        self.layoutWidget.setGeometry(QtCore.QRect(14, 40, 161, 421))
+        self.layoutWidget.setObjectName("layoutWidget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.layoutWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.label = QtWidgets.QLabel(parent=self.widget)
+        self.label = QtWidgets.QLabel(parent=self.layoutWidget)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
-        self.peakFreqInput = QtWidgets.QLineEdit(parent=self.widget)
+        self.peakFreqInput = QtWidgets.QLineEdit(parent=self.layoutWidget)
         self.peakFreqInput.setStyleSheet("QLineEdit {\n"
 "    border: none;\n"
 "    border-bottom: 1px solid #838383; \n"
@@ -44,10 +44,10 @@ class Ui_MainWindow(object):
 "}")
         self.peakFreqInput.setObjectName("peakFreqInput")
         self.verticalLayout.addWidget(self.peakFreqInput)
-        self.label_2 = QtWidgets.QLabel(parent=self.widget)
+        self.label_2 = QtWidgets.QLabel(parent=self.layoutWidget)
         self.label_2.setObjectName("label_2")
         self.verticalLayout.addWidget(self.label_2)
-        self.lowFreqInput = QtWidgets.QLineEdit(parent=self.widget)
+        self.lowFreqInput = QtWidgets.QLineEdit(parent=self.layoutWidget)
         self.lowFreqInput.setStyleSheet("QLineEdit {\n"
 "    border: none;\n"
 "    border-bottom: 1px solid #838383; \n"
@@ -55,10 +55,10 @@ class Ui_MainWindow(object):
 "}")
         self.lowFreqInput.setObjectName("lowFreqInput")
         self.verticalLayout.addWidget(self.lowFreqInput)
-        self.label_3 = QtWidgets.QLabel(parent=self.widget)
+        self.label_3 = QtWidgets.QLabel(parent=self.layoutWidget)
         self.label_3.setObjectName("label_3")
         self.verticalLayout.addWidget(self.label_3, 0, QtCore.Qt.AlignmentFlag.AlignHCenter)
-        self.sampleInput = QtWidgets.QLineEdit(parent=self.widget)
+        self.sampleInput = QtWidgets.QLineEdit(parent=self.layoutWidget)
         self.sampleInput.setStyleSheet("QLineEdit {\n"
 "    border: none;\n"
 "    border-bottom: 1px solid #838383; \n"
@@ -66,10 +66,10 @@ class Ui_MainWindow(object):
 "}")
         self.sampleInput.setObjectName("sampleInput")
         self.verticalLayout.addWidget(self.sampleInput)
-        self.label_4 = QtWidgets.QLabel(parent=self.widget)
+        self.label_4 = QtWidgets.QLabel(parent=self.layoutWidget)
         self.label_4.setObjectName("label_4")
         self.verticalLayout.addWidget(self.label_4, 0, QtCore.Qt.AlignmentFlag.AlignHCenter)
-        self.dtInput = QtWidgets.QLineEdit(parent=self.widget)
+        self.dtInput = QtWidgets.QLineEdit(parent=self.layoutWidget)
         self.dtInput.setStyleSheet("QLineEdit {\n"
 "    border: none;\n"
 "    border-bottom: 1px solid #838383; \n"
@@ -77,10 +77,10 @@ class Ui_MainWindow(object):
 "}")
         self.dtInput.setObjectName("dtInput")
         self.verticalLayout.addWidget(self.dtInput)
-        self.label_5 = QtWidgets.QLabel(parent=self.widget)
+        self.label_5 = QtWidgets.QLabel(parent=self.layoutWidget)
         self.label_5.setObjectName("label_5")
         self.verticalLayout.addWidget(self.label_5, 0, QtCore.Qt.AlignmentFlag.AlignHCenter)
-        self.waveletsComboBox = QtWidgets.QComboBox(parent=self.widget)
+        self.waveletsComboBox = QtWidgets.QComboBox(parent=self.layoutWidget)
         self.waveletsComboBox.setStyleSheet("QLineEdit {\n"
 "    border: none;\n"
 "    border-bottom: 1px solid #838383; \n"
@@ -88,12 +88,12 @@ class Ui_MainWindow(object):
 "}")
         self.waveletsComboBox.setObjectName("waveletsComboBox")
         self.verticalLayout.addWidget(self.waveletsComboBox)
-        self.waveletPlotBtn = QtWidgets.QPushButton(parent=self.widget)
+        self.waveletPlotBtn = QtWidgets.QPushButton(parent=self.layoutWidget)
         self.waveletPlotBtn.setObjectName("waveletPlotBtn")
         self.verticalLayout.addWidget(self.waveletPlotBtn)
         self.horizontalLayout_3.addWidget(self.frame)
         self.frame_2 = QtWidgets.QFrame(parent=self.centralwidget)
-        self.frame_2.setMaximumSize(QtCore.QSize(639, 16777215))
+        self.frame_2.setMaximumSize(QtCore.QSize(900, 16777215))
         self.frame_2.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.frame_2.setObjectName("frame_2")
@@ -107,7 +107,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addWidget(self.frame_2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(parent=MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1011, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1118, 21))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(parent=MainWindow)

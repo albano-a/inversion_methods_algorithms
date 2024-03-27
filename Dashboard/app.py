@@ -20,8 +20,8 @@ import sys
 plt.style.use(['bmh'])
 
 class Ricker:
-    def __init__(self, peak_freq, samples, dt, canvas):
-        self.peak_freq = peak_freq
+    def __init__(self, high_freq, samples, dt, canvas):
+        self.high_freq = high_freq
         self.samples = samples
         self.dt = dt
         self.canvas = canvas
@@ -29,24 +29,33 @@ class Ricker:
     def wavelet(self):
         twlet = np.arange(self.samples) * (self.dt / 1000)
         twlet = np.concatenate((np.flipud(-twlet[1:]), twlet), axis=0)
-        wlet = (1. -2.*(np.pi**2)*(self.peak_freq**2)*(twlet**2))*np.exp(-(np.pi**2)*(self.peak_freq**2)*(twlet**2))
+        wlet = (1. -2.*(np.pi**2)*(self.high_freq**2)*(twlet**2))*np.exp(-(np.pi**2)*(self.high_freq**2)*(twlet**2))
         return twlet, wlet
 
     def plot(self):
         twlet, wlet = self.wavelet()
-        ax = self.canvas.figure.add_subplot(111)
+        
+        fft_r = abs(np.fft.rfft(wlet))
+        freqs_r = np.fft.rfftfreq(twlet.shape[0], d=4/1000)
+        fft_r = fft_r / np.max(fft_r)
+        
+        ax = self.canvas.figure.add_subplot(211)
         ax.plot(twlet, wlet)
         ax.set_title('Ricker Wavelet')
+        ax1 = self.canvas.figure.add_subplot(212)
+        ax1.plot(freqs_r, fft_r)
+        ax1.set_title('Ricker Spectrum')
         self.canvas.figure.set_tight_layout(True)
         self.canvas.draw()
 
 class Butterworth:
-    def __init__(self, peak_freq, low_freq,samples, dt, canvas):
-        self.peak_freq = peak_freq
+    def __init__(self, high_freq, low_freq,samples, dt, canvas):
+        self.high_freq = high_freq
         self.low_freq = low_freq
         self.samples = samples
         self.dt = dt
-        self.canvas = canvas
+        self.canvas = canvas       # wavelet
+
         
     def wavelet(self):
         twlet = np.arange(self.samples) * (self.dt / 1000)
@@ -56,7 +65,7 @@ class Butterworth:
 
         # Apply high-pass Butterworth filter
         fs = 1000 * (1 / self.dt)
-        b, a = signal.butter(4, self.peak_freq, fs=fs)
+        b, a = signal.butter(4, self.high_freq, fs=fs)
         response_zp = signal.filtfilt(b, a, imp)
 
         # Apply low-pass Butterworth filter
@@ -67,12 +76,17 @@ class Butterworth:
     
     def plot(self):
         twlet, butter_wvlt = self.wavelet()
-        ax = self.canvas.figure.add_subplot(121)
+        
+        fft_b = abs(np.fft.rfft(butter_wvlt))
+        freqs_b = np.fft.rfftfreq(twlet.shape[0], d=4/1000)
+        fft_b = fft_b / np.max(fft_b)
+        
+        ax = self.canvas.figure.add_subplot(211)
         ax.plot(twlet, butter_wvlt)
         ax.set_title('Butterworth Wavelet')
-        ax1 = self.canvas.figure.add_subplot(122)
-        ax1.plot(twlet, butter_wvlt)
-        ax1.set_title('Butterworth Wavelet2')
+        ax1 = self.canvas.figure.add_subplot(212)
+        ax1.plot(freqs_b, fft_b)
+        ax1.set_title('Butterworth Spectrum')
         self.canvas.figure.set_tight_layout(True)
         self.canvas.draw()
 
@@ -100,25 +114,35 @@ class MyGUI(QMainWindow, Ui_MainWindow):
 
     def plot(self):
         self.figure.clear()
-        self.peak_freq = self.peakFreqInput.text()
+        self.high_freq = self.peakFreqInput.text()
         self.low_freq = self.lowFreqInput.text()
         self.samples = self.sampleInput.text()
         self.dt = self.dtInput.text()
         self.wavelet = self.waveletsComboBox.currentText()
         
         if self.wavelet == 'Ricker':
-            self.ricker = Ricker(float(self.peak_freq), 
+            self.ricker = Ricker(float(self.high_freq), 
                                  int(self.samples), 
                                  float(self.dt), 
                                  self.canvas)
             return self.ricker.plot()
         if self.wavelet == 'ButterWorth':
-            self.butterworth = Butterworth(float(self.peak_freq), 
-                                           float(self.low_freq), 
-                                           int(self.samples), 
-                                           float(self.dt), 
-                                           self.canvas)
-            return self.butterworth.plot()
+            if not self.high_freq or not self.low_freq:
+                QMessageBox.warning(self, 'Aviso', 'Frequência Alta e Frequência Baixa são obrigatórios')
+            else:
+                try:
+                    high_freq = float(self.high_freq)
+                    low_freq = float(self.low_freq)
+                except ValueError:
+                    QMessageBox.warning(self, 'Aviso', 'Frequência Alta e Frequência Baixa devem ser números válidos')
+                    return
+
+                self.butterworth = Butterworth(high_freq, 
+                                                low_freq, 
+                                                int(self.samples), 
+                                                float(self.dt), 
+                                                self.canvas)
+                return self.butterworth.plot()
         
     def export_figure(self):
         filename, _ = QFileDialog.getSaveFileName(self, 

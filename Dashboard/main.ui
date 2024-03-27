@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1011</width>
+    <width>1118</width>
     <height>690</height>
    </rect>
   </property>
@@ -54,7 +54,7 @@
         <string>Exportar imagem</string>
        </property>
       </widget>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
          <x>14</x>
@@ -169,7 +169,7 @@
      <widget class="QFrame" name="frame_2">
       <property name="maximumSize">
        <size>
-        <width>639</width>
+        <width>900</width>
         <height>16777215</height>
        </size>
       </property>
@@ -203,7 +203,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1011</width>
+     <width>1118</width>
      <height>21</height>
     </rect>
    </property>

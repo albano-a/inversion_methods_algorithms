@@ -12,7 +12,6 @@ from main import Ui_MainWindow
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from OpenGL.GL import *
 import numpy as np
 from scipy import signal
 import sys
@@ -34,11 +33,11 @@ class Ricker:
 
     def plot(self):
         twlet, wlet = self.wavelet()
-        
+
         fft_r = abs(np.fft.rfft(wlet))
         freqs_r = np.fft.rfftfreq(twlet.shape[0], d=4/1000)
         fft_r = fft_r / np.max(fft_r)
-        
+
         ax = self.canvas.figure.add_subplot(211)
         ax.plot(twlet, wlet)
         ax.set_title('Ricker Wavelet')
@@ -56,7 +55,7 @@ class Butterworth:
         self.dt = dt
         self.canvas = canvas       # wavelet
 
-        
+
     def wavelet(self):
         twlet = np.arange(self.samples) * (self.dt / 1000)
         twlet = np.concatenate((np.flipud(-twlet[1:]), twlet), axis=0)
@@ -73,14 +72,14 @@ class Butterworth:
         butter_wvlt = signal.filtfilt(low_b, low_a, response_zp)
 
         return twlet, butter_wvlt
-    
+
     def plot(self):
         twlet, butter_wvlt = self.wavelet()
-        
+
         fft_b = abs(np.fft.rfft(butter_wvlt))
         freqs_b = np.fft.rfftfreq(twlet.shape[0], d=4/1000)
         fft_b = fft_b / np.max(fft_b)
-        
+
         ax = self.canvas.figure.add_subplot(211)
         ax.plot(twlet, butter_wvlt)
         ax.set_title('Butterworth Wavelet')
@@ -97,7 +96,7 @@ class MyGUI(QMainWindow, Ui_MainWindow):
 
         self.figure = Figure()
         self.canvas = FigureCanvas(self.figure)
-        
+
         # create a QGraphicsScene
         self.scene = QGraphicsScene()
 
@@ -106,9 +105,9 @@ class MyGUI(QMainWindow, Ui_MainWindow):
 
         # set the QGraphicsScene for the QGraphicsView
         self.graphicsView.setScene(self.scene)
-        
+
         self.waveletsComboBox.addItems(['Ricker', 'ButterWorth'])
-        
+
         self.waveletPlotBtn.clicked.connect(self.plot)
         self.exportFigPlot.clicked.connect(self.export_figure)
 
@@ -119,11 +118,11 @@ class MyGUI(QMainWindow, Ui_MainWindow):
         self.samples = self.sampleInput.text()
         self.dt = self.dtInput.text()
         self.wavelet = self.waveletsComboBox.currentText()
-        
+
         if self.wavelet == 'Ricker':
-            self.ricker = Ricker(float(self.high_freq), 
-                                 int(self.samples), 
-                                 float(self.dt), 
+            self.ricker = Ricker(float(self.high_freq),
+                                 int(self.samples),
+                                 float(self.dt),
                                  self.canvas)
             return self.ricker.plot()
         if self.wavelet == 'ButterWorth':
@@ -137,27 +136,27 @@ class MyGUI(QMainWindow, Ui_MainWindow):
                     QMessageBox.warning(self, 'Aviso', 'Frequência Alta e Frequência Baixa devem ser números válidos')
                     return
 
-                self.butterworth = Butterworth(high_freq, 
-                                                low_freq, 
-                                                int(self.samples), 
-                                                float(self.dt), 
+                self.butterworth = Butterworth(high_freq,
+                                                low_freq,
+                                                int(self.samples),
+                                                float(self.dt),
                                                 self.canvas)
                 return self.butterworth.plot()
-        
+
     def export_figure(self):
-        filename, _ = QFileDialog.getSaveFileName(self, 
-                                                  'Save File', 
-                                                  '', 
+        filename, _ = QFileDialog.getSaveFileName(self,
+                                                  'Save File',
+                                                  '',
                                                   'Images (*.png *.jpg *.bmp *.svg)')
         if filename:
             self.canvas.figure.savefig(filename)
 
-        
+
 def main():
     app = QApplication(sys.argv)
     window = MyGUI()
     window.show()
     sys.exit(app.exec())
-    
+
 if __name__ == '__main__':
     main()

@@ -37,55 +37,71 @@ class Ui_MainWindow(object):
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
         self.peakFreqInput = QtWidgets.QLineEdit(parent=self.layoutWidget)
-        self.peakFreqInput.setStyleSheet("QLineEdit {\n"
-"    border: none;\n"
-"    border-bottom: 1px solid #838383; \n"
-"    border-radius: 5px;  /* Apply border-radius */\n"
-"}")
+        self.peakFreqInput.setStyleSheet(
+            "QLineEdit {\n"
+            "    border: none;\n"
+            "    border-bottom: 1px solid #838383; \n"
+            "    border-radius: 5px;  /* Apply border-radius */\n"
+            "}"
+        )
         self.peakFreqInput.setObjectName("peakFreqInput")
         self.verticalLayout.addWidget(self.peakFreqInput)
         self.label_2 = QtWidgets.QLabel(parent=self.layoutWidget)
         self.label_2.setObjectName("label_2")
         self.verticalLayout.addWidget(self.label_2)
         self.lowFreqInput = QtWidgets.QLineEdit(parent=self.layoutWidget)
-        self.lowFreqInput.setStyleSheet("QLineEdit {\n"
-"    border: none;\n"
-"    border-bottom: 1px solid #838383; \n"
-"    border-radius: 5px;  /* Apply border-radius */\n"
-"}")
+        self.lowFreqInput.setStyleSheet(
+            "QLineEdit {\n"
+            "    border: none;\n"
+            "    border-bottom: 1px solid #838383; \n"
+            "    border-radius: 5px;  /* Apply border-radius */\n"
+            "}"
+        )
         self.lowFreqInput.setObjectName("lowFreqInput")
         self.verticalLayout.addWidget(self.lowFreqInput)
         self.label_3 = QtWidgets.QLabel(parent=self.layoutWidget)
         self.label_3.setObjectName("label_3")
-        self.verticalLayout.addWidget(self.label_3, 0, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        self.verticalLayout.addWidget(
+            self.label_3, 0, QtCore.Qt.AlignmentFlag.AlignHCenter
+        )
         self.sampleInput = QtWidgets.QLineEdit(parent=self.layoutWidget)
-        self.sampleInput.setStyleSheet("QLineEdit {\n"
-"    border: none;\n"
-"    border-bottom: 1px solid #838383; \n"
-"    border-radius: 5px;  /* Apply border-radius */\n"
-"}")
+        self.sampleInput.setStyleSheet(
+            "QLineEdit {\n"
+            "    border: none;\n"
+            "    border-bottom: 1px solid #838383; \n"
+            "    border-radius: 5px;  /* Apply border-radius */\n"
+            "}"
+        )
         self.sampleInput.setObjectName("sampleInput")
         self.verticalLayout.addWidget(self.sampleInput)
         self.label_4 = QtWidgets.QLabel(parent=self.layoutWidget)
         self.label_4.setObjectName("label_4")
-        self.verticalLayout.addWidget(self.label_4, 0, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        self.verticalLayout.addWidget(
+            self.label_4, 0, QtCore.Qt.AlignmentFlag.AlignHCenter
+        )
         self.dtInput = QtWidgets.QLineEdit(parent=self.layoutWidget)
-        self.dtInput.setStyleSheet("QLineEdit {\n"
-"    border: none;\n"
-"    border-bottom: 1px solid #838383; \n"
-"    border-radius: 5px;  /* Apply border-radius */\n"
-"}")
+        self.dtInput.setStyleSheet(
+            "QLineEdit {\n"
+            "    border: none;\n"
+            "    border-bottom: 1px solid #838383; \n"
+            "    border-radius: 5px;  /* Apply border-radius */\n"
+            "}"
+        )
         self.dtInput.setObjectName("dtInput")
         self.verticalLayout.addWidget(self.dtInput)
         self.label_5 = QtWidgets.QLabel(parent=self.layoutWidget)
         self.label_5.setObjectName("label_5")
-        self.verticalLayout.addWidget(self.label_5, 0, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        self.verticalLayout.addWidget(
+            self.label_5, 0, QtCore.Qt.AlignmentFlag.AlignHCenter
+        )
         self.waveletsComboBox = QtWidgets.QComboBox(parent=self.layoutWidget)
-        self.waveletsComboBox.setStyleSheet("QLineEdit {\n"
-"    border: none;\n"
-"    border-bottom: 1px solid #838383; \n"
-"    border-radius: 5px;  /* Apply border-radius */\n"
-"}")
+        self.waveletsComboBox.setStyleSheet(
+            "QLineEdit {\n"
+            "    border: none;\n"
+            "    border-bottom: 1px solid #838383; \n"
+            "    border-radius: 5px;  /* Apply border-radius */\n"
+            "}"
+        )
         self.waveletsComboBox.setObjectName("waveletsComboBox")
         self.verticalLayout.addWidget(self.waveletsComboBox)
         self.waveletPlotBtn = QtWidgets.QPushButton(parent=self.layoutWidget)
@@ -121,8 +137,18 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.exportFigPlot.setText(_translate("MainWindow", "Exportar imagem"))
-        self.label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">Frequência Alta</p></body></html>"))
-        self.label_2.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">Frequência Baixa</p></body></html>"))
+        self.label.setText(
+            _translate(
+                "MainWindow",
+                '<html><head/><body><p align="center">Frequência Alta</p></body></html>',
+            )
+        )
+        self.label_2.setText(
+            _translate(
+                "MainWindow",
+                '<html><head/><body><p align="center">Frequência Baixa</p></body></html>',
+            )
+        )
         self.label_3.setText(_translate("MainWindow", "Amostras"))
         self.label_4.setText(_translate("MainWindow", "Dt"))
         self.label_5.setText(_translate("MainWindow", "Wavelet"))

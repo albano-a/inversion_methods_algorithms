@@ -1,0 +1,4 @@
+import pylops
+
+pylops.avo.poststack.PoststackLinearModelling
+pylops.optimization.leastsquares.normal_equations_inversion()
